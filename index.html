@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#17110d">
+<title>SERKAP! — Permainan Parti Malaysia</title>
+<meta name="description" content="Permainan parti cari penyamar edisi Malaysia. Satu telefon, ramai member — siapa Lalang, siapa Kaki Goreng?">
+
+<!-- PWA: boleh dipasang ke skrin utama & main tanpa internet -->
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SERKAP!">
+
+<!-- Pratonton bila link dikongsi di WhatsApp / media sosial -->
+<meta property="og:title" content="SERKAP! — Permainan Parti Malaysia">
+<meta property="og:description" content="Satu telefon, ramai member. Siapa Lalang? Siapa Kaki Goreng?">
+<meta property="og:image" content="icons/icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Bungee&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Skrin pembukaan: logo papan tanda sementara app dimuatkan -->
+<div class="splash" id="splash" aria-hidden="true">
+  <div class="splash-logo" id="splash-logo"></div>
+  <div class="splash-title">SERKAP!</div>
+  <div class="splash-sub">Kedai Tuduh-Menuduh</div>
+</div>
+
+<div class="bg" id="bg-floaties" aria-hidden="true"></div>
+
+<div id="app">
+
+  <!-- ================= MENU UTAMA (KEMAS & MUDAH UBAH) ================= -->
+  <section id="scr-menu" class="screen active">
+    <!-- Logo: papan tanda kedai kopi lama yang tergantung -->
+    <div class="signboard" aria-label="SERKAP! Kedai Tuduh-Menuduh">
+      <span class="sign-hanger l"></span><span class="sign-hanger r"></span>
+      <div class="sign-board">
+        <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+        <div class="sign-top">★ KEDAI TUDUH-MENUDUH ★</div>
+        <div class="sign-main">
+          <span class="sign-emblem" id="hero-logo-icon" onclick="wiggleLogo()"></span>
+          <h1 class="sign-title">SERKAP!</h1>
+        </div>
+        <div class="sign-sub"><span>PERMAINAN PARTI</span><i></i><span>1 TELEFON</span></div>
+        <span class="sign-tag">BUKA 24 JAM</span>
+      </div>
+    </div>
+
+    <!-- Panel Persediaan Pantas Terus Di Home -->
+    <div class="card quick-panel">
+      <div class="qp-head">
+        <span class="label" id="lbl-home-setup">Mod &amp; Tetapan Pantas</span>
+        <button class="group-toggle" onclick="quickToggleVersion()" id="home-ver-btn">Balance</button>
+      </div>
+
+      <div class="mode-cards">
+        <button class="mode-card" id="hm-mode-1" onclick="setOption('mode', 1)">
+          <div class="mc-top"><span>Mod Lalang</span><span class="mc-ico" id="hm-ico-1"></span></div>
+          <span class="tiny">Dapat kata hampir sama, tak sedar diri penyamar</span>
+        </button>
+        <button class="mode-card" id="hm-mode-2" onclick="setOption('mode', 2)">
+          <div class="mc-top"><span>Kaki Goreng</span><span class="mc-ico" id="hm-ico-2"></span></div>
+          <span class="tiny">Tahu diri penyamar &amp; tiada kata, kena goreng!</span>
+        </button>
+      </div>
+
+      <div class="qp-grid">
+        <button class="qp-box clickable" onclick="go('scr-players')">
+          <div style="min-width:0;">
+            <span class="qp-lbl" id="hm-geng-lbl">Geng Pemain</span>
+            <span class="qp-val ellipsis" id="hm-players-val">4 Pemain</span>
+          </div>
+          <span style="color:var(--accent); font-size:1.1rem;">›</span>
+        </button>
+
+        <div class="qp-box">
+          <div>
+            <span class="qp-lbl">Penyamar</span>
+            <span class="qp-val" id="hm-imp-lbl">1 Orang</span>
+          </div>
+          <div class="mini-step">
+            <button id="hm-imp-minus" onclick="adjSetting('imposters', -1)" aria-label="Kurang penyamar">−</button>
+            <span id="hm-imp-val">1</span>
+            <button id="hm-imp-plus" onclick="adjSetting('imposters', 1)" aria-label="Tambah penyamar">+</button>
+          </div>
+        </div>
+
+        <button class="qp-box clickable" onclick="cycleQuickTime()">
+          <div>
+            <span class="qp-lbl">Masa Debat</span>
+            <span class="qp-val" id="hm-time-val">2:00</span>
+          </div>
+          <span class="badge" style="padding:3px 7px; font-size:0.65rem;">Tukar</span>
+        </button>
+
+        <button class="qp-box clickable" onclick="go('scr-settings')">
+          <div style="min-width:0;">
+            <span class="qp-lbl">Roda Denda</span>
+            <span class="qp-val ellipsis" id="hm-extra-val">Santai</span>
+          </div>
+          <span style="color:var(--accent); font-size:1.1rem;">›</span>
+        </button>
+      </div>
+    </div>
+
+    <button class="btn btn-lg shine" onclick="goPlay()" id="btn-main-play">PILIH KATEGORI &amp; MULA</button>
+
+    <div class="sec-links">
+      <button class="sec-link" onclick="openCustom('scr-menu')">
+        <span class="sl-ico" id="ti-custom" style="background:rgba(199,155,216,0.16); color:var(--violet);"></span>
+        <div style="min-width:0;">
+          <strong>Dek Kustom</strong>
+          <span class="tiny ellipsis" id="tile-custom" style="display:block;">Perkataan sendiri</span>
+        </div>
+      </button>
+      <button class="sec-link" onclick="go('scr-howto')">
+        <span class="sl-ico" id="ti-howto" style="background:rgba(224,163,92,0.15); color:var(--accent);"></span>
+        <div style="min-width:0;">
+          <strong>Cara Main</strong>
+          <span class="tiny ellipsis" style="display:block;">Peraturan &amp; watak</span>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <!-- ================= PEMAIN & SIMPANAN GENG ================= -->
+  <section id="scr-players" class="screen">
+    <div class="topbar">
+      <h2 class="title">Senarai Pemain</h2>
+      <span class="badge white" id="pl-count">4 / 12</span>
+    </div>
+
+    <!-- Bar Senarai Geng Tersimpan -->
+    <div class="card stack" style="padding:13px 14px;">
+      <div class="row">
+        <span class="label" id="lbl-geng-bar">Senarai Geng Lepak</span>
+        <button class="group-toggle" onclick="openGangManager()" id="btn-rename-geng">Urus Geng</button>
+      </div>
+      <div class="geng-bar" id="geng-bar"></div>
+    </div>
+
+    <div class="card">
+      <div class="input-row">
+        <input type="text" id="inp-player" placeholder="Tambah nama member..." maxlength="15" onkeydown="if(event.key==='Enter') addPlayer()">
+        <button class="btn btn-sm" onclick="addPlayer()">+ Tambah</button>
+      </div>
+      <p class="tiny" style="margin-top:8px;">Minimum 3, maksimum 12 pemain. Tekan avatar untuk tukar ikon, tekan nama untuk tukar nama. Senarai geng disimpan automatik.</p>
+    </div>
+    <div id="player-list" class="stack"></div>
+    <div class="footer-actions">
+      <button class="btn" onclick="goPlay()" id="btn-pl-play">Main Dengan Geng Ni</button>
+      <button class="btn btn-ghost btn-sm" style="width:100%;" onclick="resetScores()" id="btn-pl-reset">Reset Mata Geng Ini</button>
+    </div>
+  </section>
+
+  <!-- ================= TETAPAN ================= -->
+  <section id="scr-settings" class="screen">
+    <div class="topbar"><h2 class="title">Tetapan Penuh</h2><span class="badge" id="ver-badge">Auto Adil</span></div>
+
+    <div class="label sec-label">Asas</div>
+    <div class="card">
+      <strong style="display:block; margin-bottom:8px;">Versi Tetapan</strong>
+      <div class="seg" data-key="version">
+        <button data-val="balance" id="seg-ver-bal">Balance</button>
+        <button data-val="free" id="seg-ver-free">Bebas</button>
+      </div>
+      <p class="tiny" id="ver-desc" style="margin-top:8px;"></p>
+
+      <div style="border-top:1px solid var(--line); margin-top:14px; padding-top:14px;">
+        <strong style="display:block; margin-bottom:8px;">Mod Cara Main</strong>
+        <div class="seg" data-key="mode">
+          <button data-val="1" id="seg-mode-1">Mod Lalang</button>
+          <button data-val="2" id="seg-mode-2">Kaki Goreng</button>
+        </div>
+        <p class="tiny" id="mode-desc" style="margin-top:8px;"></p>
+      </div>
+    </div>
+
+    <div class="label sec-label">Watak</div>
+    <div class="card">
+      <div class="set-row">
+        <div><strong>Bilangan Penyamar</strong><div class="tiny" id="rec-imp"></div></div>
+        <div class="stepper">
+          <button id="imp-minus" onclick="adjSetting('imposters',-1)">−</button>
+          <output id="val-imp">1</output>
+          <button id="imp-plus" onclick="adjSetting('imposters',1)">+</button>
+        </div>
+      </div>
+      <div class="set-row">
+        <div><strong>Watak Tambahan ("Si Blur")</strong><div class="tiny" id="blur-desc"></div></div>
+        <div class="stepper">
+          <button id="blur-minus" onclick="adjSetting('blurs',-1)">−</button>
+          <output id="val-blur">0</output>
+          <button id="blur-plus" onclick="adjSetting('blurs',1)">+</button>
+        </div>
+      </div>
+      <div class="set-row" id="row-hint">
+        <div><strong>Hint Bayangan</strong><div class="tiny">Klu kecil untuk yang tiada perkataan</div></div>
+        <button class="switch" id="sw-hint" onclick="toggleSetting('hint')" aria-label="Hint"></button>
+      </div>
+    </div>
+
+    <div class="label sec-label">Pusingan &amp; Hiburan</div>
+    <div class="card">
+      <div class="set-row">
+        <div><strong>Masa Perbincangan</strong><div class="tiny">Tempoh debat sebelum undi</div></div>
+        <div class="stepper">
+          <button onclick="adjTime(-30)">−</button>
+          <output id="val-time" style="min-width:70px;">2:00</output>
+          <button onclick="adjTime(30)">+</button>
+        </div>
+      </div>
+      <div style="border-top:1px solid var(--line); margin-top:14px; padding-top:14px;">
+        <strong style="display:block; margin-bottom:8px;" id="lbl-twist-set">Kad Cabaran (Plot Twist)</strong>
+        <div class="seg" data-key="twistMode">
+          <button data-val="Off">Off</button>
+          <button data-val="Santai">Santai</button>
+          <button data-val="Kecoh">Kecoh</button>
+          <button data-val="Campur">Campur</button>
+        </div>
+      </div>
+      <div style="border-top:1px solid var(--line); margin-top:14px; padding-top:14px;">
+        <div class="row" style="margin-bottom:6px;">
+          <strong id="lbl-denda-set">Roda Denda (Boleh Pilih Lebih 1)</strong>
+          <button class="group-toggle" onclick="toggleAllDenda()" id="btn-denda-toggle-all">Semua</button>
+        </div>
+        <p class="tiny" style="margin-bottom:8px;">Boleh pilih lebih dari satu tahap. Tak pilih langsung = tiada denda.</p>
+        <div class="multi-pills" id="denda-pills">
+          <button class="mpill" data-denda="Santai" onclick="toggleDendaMode('Santai')">
+            <span>Santai</span>
+            <span class="mp-sub">Ringan</span>
+          </button>
+          <button class="mpill" data-denda="Sporting" onclick="toggleDendaMode('Sporting')">
+            <span>Sporting</span>
+            <span class="mp-sub">Berlakon</span>
+          </button>
+          <button class="mpill" data-denda="Koyak" onclick="toggleDendaMode('Koyak')">
+            <span>Koyak</span>
+            <span class="mp-sub">Berat</span>
+          </button>
+        </div>
+      </div>
+      <div class="set-row" style="border-top:1px solid var(--line); margin-top:14px; padding-top:14px;">
+        <div><strong id="lbl-sound-set">Bunyi &amp; Getaran</strong><div class="tiny">Bunyi pemasa, dedah identiti &amp; keputusan</div></div>
+        <button class="switch" id="sw-sound" onclick="toggleSetting('sound')" aria-label="Bunyi"></button>
+      </div>
+      <div class="set-row" id="row-chaos" style="border-top:1px solid var(--line); margin-top:14px; padding-top:14px;">
+        <div><strong style="color:var(--accent);" id="lbl-chaos-set">Kejutan Pusingan Gila</strong><div class="tiny">15% peluang semua orang kena prank!</div></div>
+        <button class="switch" id="sw-chaos" onclick="toggleSetting('chaos')" aria-label="Kejutan"></button>
+      </div>
+    </div>
+
+    <div class="footer-actions"><button class="btn" onclick="goPlay()" id="btn-set-play">Main Dengan Tetapan Ni</button></div>
+  </section>
+
+  <!-- ================= MARKAH ================= -->
+  <section id="scr-score" class="screen">
+    <div class="topbar"><h2 class="title">Papan Markah</h2><span class="badge" id="score-badge">SIJIL LEPAK</span></div>
+    <div class="card"><div class="podium" id="podium"></div></div>
+    <div id="score-rest" class="stack"></div>
+    <div class="label sec-label">Anugerah Sesi</div>
+    <div class="card" id="awards"></div>
+    <div class="footer-actions"><button class="btn btn-ghost" onclick="resetScores()" id="btn-sc-reset">Reset Semua Mata</button></div>
+  </section>
+
+  <!-- ================= DEK KUSTOM ================= -->
+  <section id="scr-custom" class="screen">
+    <div class="topbar">
+      <button class="icon-btn" onclick="go(customBack)" aria-label="Kembali" id="btn-cust-back">←</button>
+      <h2 class="title">Dek Kustom</h2>
+    </div>
+    <div class="card stack">
+      <p class="tiny">Masukkan pasangan perkataan dalaman geng korang.</p>
+      <input type="text" id="cust-w1" maxlength="40" placeholder="Perkataan Rakyat (cth: Kereta Myvi)">
+      <input type="text" id="cust-w2" maxlength="40" placeholder="Perkataan Lalang (cth: Kereta Axia)">
+      <input type="text" id="cust-hint" maxlength="80" placeholder="Hint penyamar — pilihan (cth: Raja jalan raya)">
+      <input type="text" id="cust-q" maxlength="100" placeholder="Soalan pemicu debat — pilihan">
+      <button class="btn" onclick="saveCustomWord()">+ Simpan Pasangan Kata</button>
+    </div>
+    <div class="label sec-label" id="cust-count">Dek Korang</div>
+    <div id="custom-list" class="stack"></div>
+  </section>
+
+  <!-- ================= CARA MAIN ================= -->
+  <section id="scr-howto" class="screen">
+    <div class="topbar">
+      <button class="icon-btn" onclick="go('scr-menu')" aria-label="Kembali" id="btn-howto-back">←</button>
+      <h2 class="title">Cara Main</h2>
+    </div>
+    <div class="card">
+      <div class="step"><span class="n">1</span><div><strong>Agih Rahsia</strong><p class="tiny">Pas telefon kepada setiap pemain. Tekan &amp; tahan kad untuk tengok perkataan, lepaskan untuk sembunyi.</p></div></div>
+      <div class="step"><span class="n">2</span><div><strong>Bagi Klu</strong><p class="tiny">Ikut giliran, setiap orang bagi satu klu pasal perkataan dia. Jangan terlalu ketara, nanti penyamar dapat tangkap!</p></div></div>
+      <div class="step"><span class="n">3</span><div><strong>Debat &amp; Undi</strong><p class="tiny">Bila masa tamat, kira 1-2-3 dan tunjuk jari serentak. Tekan nama yang paling ramai kena tuduh.</p></div></div>
+      <div class="step"><span class="n">4</span><div><strong>Teka &amp; Curi</strong><p class="tiny">Kaki Goreng atau Si Blur yang kantoi dapat satu peluang teka perkataan Rakyat. Betul = curi kemenangan!</p></div></div>
+    </div>
+    <div class="label sec-label">Watak</div>
+    <div class="card" id="howto-roles"></div>
+    <div class="label sec-label">Peraturan Menang</div>
+    <div class="card" id="howto-rules"></div>
+  </section>
+
+  <!-- ================= PILIH KATEGORI ================= -->
+  <section id="scr-categories" class="screen">
+    <div class="topbar">
+      <button class="icon-btn" onclick="go('scr-menu')" aria-label="Kembali" id="btn-cat-back">←</button>
+      <h2 class="title">Pilih Kategori</h2>
+    </div>
+    <div class="card" id="cat-summary"></div>
+    <div id="cat-list" class="cat-grid"></div>
+    <div class="footer-actions sticky-footer"><button class="btn btn-lg shine" id="btn-start" onclick="startGame()">MULA AGIH RAHSIA</button></div>
+  </section>
+
+  <!-- ================= PASS THE PHONE ================= -->
+  <section id="scr-pass" class="screen">
+    <div class="topbar">
+      <button class="icon-btn" onclick="quitGame()" aria-label="Keluar" id="btn-pass-quit">✕</button>
+      <div style="flex:1; text-align:center;"><span class="badge" id="pass-badge">PEMAIN 1 / 4</span></div>
+      <div style="width:42px;"></div>
+    </div>
+    <div class="dots" id="pass-dots"></div>
+    <div class="handoff">
+      <div class="avatar big" id="pass-avatar"></div>
+      <p class="label">Serahkan telefon kepada</p>
+      <h2 class="title" style="font-size:2rem;" id="pass-name">Salim</h2>
+    </div>
+    <div id="peek" class="peek" tabindex="0" role="button" aria-label="Tekan dan tahan untuk lihat rahsia">
+      <div id="peek-inst">
+        <div class="finger" id="peek-finger"></div>
+        <h3 class="title" style="color:var(--accent); font-size:1.4rem;">TEKAN &amp; TAHAN</h3>
+        <p class="sub" style="margin-top:4px;">Tahan jari pada kad ni untuk tengok rahsia kau.<br>Lepaskan untuk sembunyi. Jangan bagi orang intai!</p>
+      </div>
+      <div id="peek-content" hidden></div>
+    </div>
+    <button id="btn-next-player" class="btn" disabled onclick="nextPass()">Tahan kad di atas dahulu</button>
+  </section>
+
+  <!-- ================= DEBAT ================= -->
+  <section id="scr-debate" class="screen">
+    <div class="topbar">
+      <button class="icon-btn" onclick="quitGame()" aria-label="Keluar" id="btn-deb-quit">✕</button>
+      <div style="flex:1; display:flex; gap:6px; flex-wrap:wrap;">
+        <span class="badge" id="deb-cat">Kategori</span>
+        <span class="badge white" id="deb-mode">Mod Lalang</span>
+      </div>
+      <span class="badge teal" id="deb-round">UNDI #1</span>
+    </div>
+
+    <div class="card notice" id="deb-status" hidden></div>
+
+    <div class="card twist" id="deb-twist-box">
+      <div class="row">
+        <span class="label" style="color:var(--accent);" id="lbl-deb-twist">Syarat Plot Twist</span>
+        <button class="btn btn-ghost btn-sm" style="padding:5px 10px; font-size:0.75rem;" onclick="rerollTwist()" id="btn-reroll-twist">Tukar</button>
+      </div>
+      <div id="deb-twist-text" style="font-weight:700; margin-top:6px; line-height:1.4;"></div>
+    </div>
+
+    <div class="card" style="text-align:center; padding:14px;">
+      <div class="label">Masa Perbincangan</div>
+      <div class="timer-wrap" id="timer-wrap">
+        <svg width="170" height="170" viewBox="0 0 170 170">
+          <circle class="ring-bg" cx="85" cy="85" r="74" fill="none" stroke-width="10"/>
+          <circle class="ring" id="timer-ring" cx="85" cy="85" r="74" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="464.96" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-text" id="timer-text">2:00</div>
+      </div>
+      <div class="row" style="justify-content:center; gap:8px;" id="timer-controls">
+        <button class="btn btn-ghost btn-sm" onclick="toggleTimer()" id="btn-pause">Jeda</button>
+        <button class="btn btn-ghost btn-sm" onclick="addExtraTime()">+30 Saat</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="label" style="color:var(--teal);" id="lbl-deb-order">Susunan Giliran Bagi Klu</span>
+      <div class="order" id="deb-order"></div>
+      <div class="prompt-box">
+        <span class="tiny" id="lbl-deb-prompt">Soalan pemicu debat:</span>
+        <div id="deb-prompt" style="font-weight:700; margin-top:3px; color:#f6c27a; line-height:1.4;"></div>
+      </div>
+    </div>
+
+    <div class="sound-row">
+      <button class="sound-btn" onclick="playSFX('cricket', true)"><span id="sfx-cricket"></span>Cengkerik</button>
+      <button class="sound-btn" onclick="playSFX('siren', true)"><span id="sfx-siren"></span>Siren Kantoi</button>
+      <button class="sound-btn" onclick="playSFX('gavel', true)"><span id="sfx-gavel"></span>Tukul Hakim</button>
+    </div>
+
+    <div class="footer-actions"><button class="btn btn-lg" onclick="goVote()" id="btn-go-vote">UNDI SEKARANG — SERKAP!</button></div>
+  </section>
+
+  <!-- ================= UNDIAN ================= -->
+  <section id="scr-vote" class="screen">
+    <div class="topbar">
+      <button class="icon-btn" onclick="backToDebate()" aria-label="Kembali" id="btn-vote-back">←</button>
+      <h2 class="title" id="vote-title">Undian #1</h2>
+      <button class="btn btn-ghost btn-sm" onclick="countdown()" id="btn-countdown">3-2-1</button>
+    </div>
+    <p class="sub">Kira 1, 2, 3 — tunjuk jari serentak! Tekan nama yang <strong style="color:#fff;">paling ramai kena tuduh</strong>:</p>
+    <div id="vote-grid" class="vote-grid"></div>
+    <div class="footer-actions"><button id="btn-confirm-vote" class="btn btn-lg" disabled onclick="submitVote()">DEDAHKAN IDENTITI!</button></div>
+  </section>
+
+  <!-- ================= DEDAH IDENTITI ================= -->
+  <section id="scr-reveal" class="screen">
+    <div class="reveal-stage" id="reveal-stage"></div>
+    <div class="footer-actions" id="reveal-actions"></div>
+  </section>
+
+  <!-- ================= TEKA & CURI ================= -->
+  <section id="scr-laststand" class="screen">
+    <div style="text-align:center; margin-top:14px;">
+      <span class="badge red" id="ls-badge">DISERKAP!</span>
+      <h2 class="title" style="font-size:1.9rem; margin-top:10px;" id="ls-name">Ali Diserkap!</h2>
+      <p class="sub" style="margin-top:6px;">Tapi tunggu! Kau boleh <strong style="color:var(--accent);">curi kemenangan</strong> kalau berjaya teka perkataan Rakyat. Satu peluang je!</p>
+      <div class="card notice" id="ls-privacy-note" style="margin-top:10px; padding:10px 12px;" hidden></div>
+    </div>
+    <div id="ls-options" class="stack" style="margin:auto 0;"></div>
+  </section>
+
+  <!-- ================= KEPUTUSAN ================= -->
+  <section id="scr-result" class="screen">
+    <div class="res-hero" id="res-hero">
+      <div class="res-emoji" id="res-emoji"></div>
+      <span class="badge" id="res-badge">KEPUTUSAN</span>
+      <h1 class="res-headline" id="res-headline">RAKYAT MENANG!</h1>
+      <p class="sub" id="res-sub"></p>
+    </div>
+    <div class="words" id="res-words"></div>
+    <div class="card" id="res-roles"></div>
+    <div class="card denda" id="res-denda">
+      <div class="label" id="denda-target">Denda Untuk</div>
+      <div class="denda-text" id="denda-text">Tekan butang untuk pusing roda!</div>
+      <button class="btn btn-ghost btn-sm" id="btn-spin" onclick="spinDenda()">Pusing Roda Denda</button>
+    </div>
+    <div class="footer-actions">
+      <button class="btn btn-lg" onclick="startGame()" id="btn-next-round">PUSINGAN SETERUSNYA</button>
+      <div class="row">
+        <button class="btn btn-ghost btn-sm" style="flex:1;" onclick="go('scr-categories')" id="btn-res-cat">Tukar Kategori</button>
+        <button class="btn btn-ghost btn-sm" style="flex:1;" onclick="endToMenu()" id="btn-res-menu">Menu</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= NAVIGASI BAWAH ================= -->
+<nav class="nav" id="nav">
+  <button data-go="scr-menu" onclick="go(this.dataset.go)"><span class="ni" id="ni-home"></span>Utama</button>
+  <button data-go="scr-players" onclick="go(this.dataset.go)"><span class="ni" id="ni-players"></span>Pemain</button>
+  <button data-go="scr-settings" onclick="go(this.dataset.go)"><span class="ni" id="ni-settings"></span>Tetapan</button>
+  <button data-go="scr-score" onclick="go(this.dataset.go)"><span class="ni" id="ni-score"></span>Markah</button>
+</nav>
+
+<div class="overlay" id="modal"><div class="modal-box" id="modal-box"></div></div>
+<div class="overlay" id="countdown-overlay" onclick="cancelCountdown()"><div id="count-holder"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
