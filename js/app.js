@@ -216,6 +216,7 @@ function registerServiceWorker() {
 // Panduan tambah perkataan: kedua-dua perkataan mesti dikenali ramai, sama "keluarga"
 // (supaya Lalang tak terus kantoi) tapi cukup berbeza untuk dibahaskan.
 const CATEGORY_GROUPS = [
+  { id: 'terkini', icon: 'flame', name: 'Viral & Terkini' },
   { id: 'makan', icon: 'cat_makan', name: 'Makan & Minum' },
   { id: 'tempat', icon: 'cat_negeri', name: 'Tempat & Jalan' },
   { id: 'harian', icon: 'cat_rumah', name: 'Kehidupan Harian' },
@@ -495,6 +496,27 @@ const CATEGORIES = [
       ['Crush Tak Layan', 'Kena Friendzone', 'Cinta', 'Apa tanda awal yang kita patut perasan?'],
       ['Ex Contact Balik', 'Ex Dah Kahwin', 'Bekas', 'Reaksi pertama kau bila dapat tahu?']
     ]
+  },
+  {
+    id: 'viral', group: 'terkini', name: 'Viral & Terkini', icon: 'flame', desc: 'Trend, makanan viral & benda hangat sekarang',
+    words: [
+      ['Labubu', 'Crybaby', 'Koleksi', 'Kalau dapat yang rare, berapa kau sanggup jual balik?'],
+      ['Pickleball', 'Padel', 'Raket', 'Kenapa tiba-tiba semua orang main benda ni?'],
+      ['ZUS Coffee', 'Kopi Kenangan', 'Kopi', 'Menu apa yang kau selalu order guna app?'],
+      ['Chagee', 'Mixue', 'Beratur', 'Berapa lama kau sanggup beratur untuk ni?'],
+      ['Coklat Dubai', 'Kunafa', 'Manis', 'Kat mana kau pertama kali cuba benda ni?'],
+      ['Matcha Latte', 'Hojicha Latte', 'Kafe', 'Kau suka yang manis ke pahit?'],
+      ['Mala Hotpot', 'Steamboat', 'Berkongsi', 'Bahan apa yang wajib kau ambil?'],
+      ['Ayam Gepuk', 'Ayam Geprek', 'Sambal', 'Tahap pedas mana yang kau mampu?'],
+      ['ChatGPT', 'Gemini', 'AI', 'Benda paling pelik kau pernah tanya dia?'],
+      ['Threads', 'X (Twitter)', 'Media sosial', 'Kau lebih banyak scroll ke posting?'],
+      ['TikTok Live', 'Shopee Live', 'Jual langsung', 'Ayat apa yang host selalu jerit?'],
+      ['Proton e.MAS', 'BYD', 'Kereta elektrik', 'Kau berani beli tak? Kenapa?'],
+      ['Run Club', 'Hiking Bukit', 'Riadah', 'Kau pergi sebab nak sihat ke nak posting?'],
+      ['War Tiket Konsert', 'War Tiket Bola', 'Rebutan', 'Pernah tak kau berjaya dapat? Macam mana?'],
+      ['Content Creator', 'Influencer', 'Kerjaya', 'Berapa follower baru boleh kira glamor?'],
+      ['Menu Rahmah', 'Set Jimat', 'Murah', 'Kat mana kau pernah jumpa benda ni?']
+    ]
   }
 ];
 
@@ -572,6 +594,7 @@ const DEFAULT_SETTINGS = {
   imposters: 1,
   blurs: 0,
   hint: false,
+  showCat: false,     // Tunjuk nama kategori kepada Kaki Goreng / Si Blur (watak tanpa perkataan)
   duration: 120,      // 0 = Tanpa Had
   twistMode: 'Campur', // 'Off' | 'Santai' | 'Kecoh' | 'Campur'
   dendaModes: ['Santai'], // Multi-pilih: gabungan 'Santai' | 'Sporting' | 'Koyak'; [] = Off
@@ -719,7 +742,15 @@ function load() {
       }
       state.set.dendaModes = state.set.dendaModes.filter((m, i, a) => DENDA_TIERS.includes(m) && a.indexOf(m) === i);
       delete state.set.dendaMode;
+
+      // Kategori baru: kalau pemain dah pilih SEMUA kategori yang dia kenal, masukkan yang baru sekali.
+      // Simpanan lama (sebelum knownCats wujud) dibuat semasa 16 kategori asal, tanpa 'viral'.
+      const known = Array.isArray(d.set.knownCats) ? d.set.knownCats : CATEGORIES.map(c => c.id).filter(id => id !== 'viral');
+      const fresh = CATEGORIES.map(c => c.id).filter(id => !known.includes(id));
+      const sel = Array.isArray(state.set.selectedCats) ? state.set.selectedCats : [];
+      if (fresh.length && known.every(id => sel.includes(id))) state.set.selectedCats = [...sel, ...fresh];
     }
+    state.set.knownCats = CATEGORIES.map(c => c.id);
     if (d.usedWords && typeof d.usedWords === 'object') state.usedWords = d.usedWords;
   } catch (e) {}
   cleanSelectedCats();
@@ -1209,6 +1240,8 @@ function syncSettings() {
   // Hint cuma relevan untuk watak tanpa perkataan: Kaki Goreng (Mod 2) atau Si Blur (Mod 1)
   $('row-hint').hidden = !(s.mode === 2 || (s.mode === 1 && s.blurs > 0));
   $('sw-hint').classList.toggle('on', s.hint);
+  $('row-showcat').hidden = $('row-hint').hidden;
+  $('sw-showcat').classList.toggle('on', !!s.showCat);
 
   $('val-time').textContent = s.duration === 0 ? '∞ Tanpa Had' : fmt(s.duration);
 
@@ -1397,6 +1430,7 @@ function startGame() {
     pair: picked.data, // [Rakyat, Lalang, Hint, Soalan]
     catId: picked.catId,
     catName: picked.catName,
+    showCat: !!s.showCat,
     chaos,
     mode: s.mode,
     hint: s.hint,
@@ -1467,14 +1501,18 @@ function showSecret(show) {
   const wordMsg = round.mode === 1
     ? 'Hafal perkataan ni! Bagi klu yang tak terlalu ketara.'
     : 'Hafal perkataan ni! Ada Kaki Goreng tanpa perkataan — serkap dia!';
+  const noWord = cur.role === 'goreng' || cur.role === 'blur';
   const effectiveHint = hintText && hintText !== 'Tiada klu tambahan'
     ? hintText
-    : (round.catName ? `Berkaitan kategori ${round.catName}` : '');
+    : (round.catName && round.showCat ? `Berkaitan kategori ${round.catName}` : '');
   const hintHtml = round.hint && effectiveHint
     ? `<div class="hint-box">${ico('bulb', 'sm')} <span>Hint bayangan: “${esc(effectiveHint)}”</span></div>`
     : '';
 
-  let html = `<span class="badge">${esc(round.catName.toUpperCase())}</span>`;
+  // Kategori ialah petunjuk besar untuk watak tanpa perkataan — sorok kecuali toggle ON
+  let html = noWord && !round.showCat
+    ? `<span class="badge">${ico('lock', 'sm')} KATEGORI RAHSIA</span>`
+    : `<span class="badge">${esc(round.catName.toUpperCase())}</span>`;
   if (cur.role === 'rakyat' || cur.role === 'lalang') {
     html += `<div class="secret-word">${esc(cur.role === 'rakyat' ? wordMain : wordAlt)}</div><p class="secret-sub">${wordMsg}</p>`;
   } else if (cur.role === 'goreng') {
@@ -1516,7 +1554,11 @@ function nextPass() {
 // ================= FASA DEBAT & PEMASA =================
 function startDebate(isContinue) {
   const s = state.set;
-  $('deb-cat').textContent = round.catName;
+  // Skrin debat dilihat semua orang (termasuk Kaki Goreng), jadi ikut toggle yang sama
+  const hasNoWordRole = round.assign.some(r => r.role === 'goreng' || r.role === 'blur');
+  $('deb-cat').innerHTML = hasNoWordRole && !round.showCat
+    ? `${ico('lock', 'sm')} Kategori Rahsia`
+    : esc(round.catName);
   $('deb-mode').innerHTML = round.mode === 1
     ? `${ico('lalang', 'sm')} Mod Lalang`
     : `${ico('kuali', 'sm')} Kaki Goreng`;
