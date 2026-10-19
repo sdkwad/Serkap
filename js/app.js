@@ -216,12 +216,10 @@ function registerServiceWorker() {
 // Panduan tambah perkataan: kedua-dua perkataan mesti dikenali ramai, sama "keluarga"
 // (supaya Lalang tak terus kantoi) tapi cukup berbeza untuk dibahaskan.
 const CATEGORY_GROUPS = [
-  { id: 'terkini', icon: 'flame', name: 'Viral & Terkini' },
   { id: 'makan', icon: 'cat_makan', name: 'Makan & Minum' },
   { id: 'tempat', icon: 'cat_negeri', name: 'Tempat & Jalan' },
   { id: 'harian', icon: 'cat_rumah', name: 'Kehidupan Harian' },
-  { id: 'budaya', icon: 'cat_budaya', name: 'Budaya & Hiburan' },
-  { id: 'lepak', icon: 'cat_pedas', name: 'Lepak' }
+  { id: 'budaya', icon: 'cat_budaya', name: 'Budaya & Hiburan' }
 ];
 
 const CATEGORIES = [
@@ -242,7 +240,12 @@ const CATEGORIES = [
       ['Mi Bandung', 'Mi Rebus', 'Mi berkuah', 'Kuah dia rasa macam mana?'],
       ['Char Kuey Teow', 'Kuey Teow Kungfu', 'Kuali panas', 'Bahan apa yang wajib ada dalam benda ni?'],
       ['Nasi Kerabu', 'Nasi Ulam', 'Tradisional', 'Negeri mana yang paling terkenal dengan benda ni?'],
-      ['Durian Musang King', 'Durian Kampung', 'Berbau', 'Berapa sanggup kau bayar untuk makan benda ni?']
+      ['Durian Musang King', 'Durian Kampung', 'Berbau', 'Berapa sanggup kau bayar untuk makan benda ni?'],
+      ['Mala Hotpot', 'Steamboat', 'Berkongsi', 'Bahan apa yang wajib kau ambil?'],
+      ['Ayam Gepuk', 'Ayam Geprek', 'Sambal', 'Tahap pedas mana yang kau mampu?'],
+      ['Menu Rahmah', 'Set Jimat', 'Murah', 'Kat mana kau pernah jumpa benda ni?'],
+      ['Nasi Briyani', 'Nasi Mandy', 'Rempah', 'Kau makan ni dengan lauk apa?'],
+      ['Lontong', 'Soto', 'Berkuah', 'Selalu makan benda ni waktu bila?']
     ]
   },
   {
@@ -259,7 +262,15 @@ const CATEGORIES = [
       ['Tau Fu Fa', 'Puding Roti', 'Lembut', 'Kau suka makan panas ke sejuk?'],
       ['Kek Lapis Sarawak', 'Kek Batik', 'Kek', 'Kalau tetamu datang, kau potong saiz berapa besar?'],
       ['Kuih Keria', 'Donut Gula', 'Bulat', 'Lebih sedap makan masa panas atau dah sejuk?'],
-      ['Cekodok Pisang', 'Lempeng Pisang', 'Pisang', 'Ini sarapan atau minum petang bagi kau?']
+      ['Cekodok Pisang', 'Lempeng Pisang', 'Pisang', 'Ini sarapan atau minum petang bagi kau?'],
+      ['Coklat Dubai', 'Kunafa', 'Manis', 'Kat mana kau pertama kali cuba benda ni?'],
+      ['Kuih Talam', 'Kuih Lompang', 'Lembut', 'Warna apa yang paling selalu kau nampak?'],
+      ['Putu Mayam', 'Putu Piring', 'Kelapa parut', 'Kau makan dengan gula apa?'],
+      ['Kuih Ketayap', 'Lepat Pisang', 'Bungkus', 'Bahagian mana paling sedap?'],
+      ['Waffle', 'Pancake', 'Topping', 'Topping apa kegemaran kau?'],
+      ['Churros', 'Donut', 'Goreng manis', 'Kau cicah dengan apa?'],
+      ['Bubur Kacang', 'Bubur Chacha', 'Santan', 'Lebih sedap makan panas ke sejuk?'],
+      ['Tart Nenas', 'Kuih Semperit', 'Balang', 'Berapa biji kau makan sekali duduk?']
     ]
   },
   {
@@ -275,7 +286,16 @@ const CATEGORIES = [
       ['Air Kelapa Muda', 'Air Tembikai', 'Segar', 'Kat mana tempat paling best minum benda ni?'],
       ['Nescafe Tarik', 'Neslo', 'Campur', 'Siapa dalam geng kita selalu order benda ni?'],
       ['Air Sirap Selasih', 'Air Barli', 'Majlis', 'Benda ni selalu dihidang masa majlis apa?'],
-      ['Yakult', 'Vitagen', 'Botol kecil', 'Kau minum sekali teguk ke hirup perlahan?']
+      ['Yakult', 'Vitagen', 'Botol kecil', 'Kau minum sekali teguk ke hirup perlahan?'],
+      ['ZUS Coffee', 'Kopi Kenangan', 'Kopi', 'Menu apa yang kau selalu order guna app?'],
+      ['Chagee', 'Mixue', 'Beratur', 'Berapa lama kau sanggup beratur untuk ni?'],
+      ['Matcha Latte', 'Hojicha Latte', 'Kafe', 'Kau suka yang manis ke pahit?'],
+      ['Teh Ais', 'Teh C Peng', 'Susu', 'Kau order ni waktu bila?'],
+      ['Air Limau Ais', 'Air Laici', 'Sejuk', 'Bila masa paling best minum ni?'],
+      ['Susu Kurma', 'Smoothie Pisang', 'Berkhasiat', 'Bila kali terakhir kau minum ni?'],
+      ['Red Bull', 'Livita', 'Tenaga', 'Kau minum ni masa nak buat apa?'],
+      ['100Plus', 'Revive', 'Isotonik', 'Biasa minum lepas buat apa?'],
+      ['Air Mineral', 'Air Masak', 'Kosong', 'Kau bawa botol sendiri ke beli?']
     ]
   },
   {
@@ -292,7 +312,15 @@ const CATEGORIES = [
       ['Kedai Runcit', '7-Eleven', 'Dekat rumah', 'Barang apa kau paling selalu beli kat sini?'],
       ['Taman Permainan', 'Taman Rekreasi', 'Petang', 'Waktu bila paling ramai orang kat sini?'],
       ['Warung Pak Cik', 'Gerai Tomyam', 'Makan murah', 'Menu apa yang kau mesti order bila pergi sini?'],
-      ['Pusat Beli-Belah', 'Outlet Premium', 'Aircond', 'Kau pergi sini nak beli barang ke cuci mata?']
+      ['Pusat Beli-Belah', 'Outlet Premium', 'Aircond', 'Kau pergi sini nak beli barang ke cuci mata?'],
+      ['IKEA', 'Kedai Perabot', 'Perabot', 'Benda apa kau beli padahal datang nak tengok je?'],
+      ['Klinik Kesihatan', 'Hospital Swasta', 'Rawatan', 'Berapa lama kau tunggu giliran?'],
+      ['Bank', 'Mesin ATM', 'Duit', 'Bila kali terakhir kau masuk sini?'],
+      ['Dobi Layan Diri', 'Kedai Dobi', 'Basuh', 'Kau buat apa sementara tunggu?'],
+      ['Kafe Hipster', 'Kopitiam Moden', 'Estetik', 'Kau datang nak minum ke nak ambil gambar?'],
+      ['Pusat Snuker', 'Pusat Boling', 'Main', 'Siapa dalam geng ni paling teruk main?'],
+      ['Kedai Tayar', 'Bengkel Kereta', 'Kereta rosak', 'Pernah rasa kena tipu kat sini?'],
+      ['Hotel', 'Homestay', 'Bermalam', 'Apa benda pertama kau check bila masuk bilik?']
     ]
   },
   {
@@ -309,7 +337,15 @@ const CATEGORIES = [
       ['Kelantan', 'Terengganu', 'Pantai timur', 'Satu perkataan loghat negeri ni yang kau tahu?'],
       ['Johor Bahru', 'Singapura', 'Selatan', 'Bila nak pergi sini, apa yang kau paling risau?'],
       ['Sunway Lagoon', 'Legoland', 'Taman tema', 'Permainan apa yang kau paling nak cuba?'],
-      ['Batu Caves', 'Bukit Bendera', 'Tinggi', 'Berapa lama rasanya nak sampai ke atas?']
+      ['Batu Caves', 'Bukit Bendera', 'Tinggi', 'Berapa lama rasanya nak sampai ke atas?'],
+      ['Pulau Tioman', 'Pulau Pangkor', 'Berlibur', 'Aktiviti apa yang kau nak buat kat sana?'],
+      ['Bukit Fraser', 'Bukit Tinggi', 'Tanah tinggi', 'Kau pergi sana naik apa?'],
+      ['Sabah', 'Sarawak', 'Malaysia Timur', 'Makanan apa wajib cuba kat sana?'],
+      ['Muzium Negara', 'Galeri Seni', 'Pameran', 'Kali terakhir kau pergi dengan siapa?'],
+      ['Zoo Negara', 'Aquaria KLCC', 'Haiwan', 'Haiwan apa kau paling nak tengok?'],
+      ['Air Terjun', 'Sungai Jeram', 'Mandi', 'Siapa dalam geng ni paling berani terjun?'],
+      ['Tasik Kenyir', 'Tasik Chini', 'Tasik', 'Aktiviti apa yang orang buat kat sana?'],
+      ['Gua Tempurung', 'Gua Niah', 'Gua', 'Kau berani masuk sampai dalam?']
     ]
   },
   {
@@ -326,7 +362,15 @@ const CATEGORIES = [
       ['Lampu Isyarat', 'Bulatan Jalan', 'Simpang', 'Siapa yang patut jalan dulu sebenarnya?'],
       ['Bonggol Jalan', 'Lubang Jalan', 'Terhentak', 'Apa ayat keluar dari mulut kau bila terlanggar?'],
       ['Parking Penuh', 'Parking Berbayar', 'Cari tempat', 'Berapa pusingan kau sanggup cari sebelum mengalah?'],
-      ['Cuci Kereta', 'Servis Kereta', 'Penjagaan', 'Berapa lama sekali kau buat benda ni?']
+      ['Cuci Kereta', 'Servis Kereta', 'Penjagaan', 'Berapa lama sekali kau buat benda ni?'],
+      ['Proton e.MAS', 'BYD', 'Kereta elektrik', 'Kau berani beli tak? Kenapa?'],
+      ['Teksi', 'Grab Car', 'Tumpang', 'Pengalaman paling pelik naik benda ni?'],
+      ['Bas RapidKL', 'Bas Mini', 'Awam', 'Waktu bila paling sesak?'],
+      ['Kapal Terbang', 'Feri', 'Perjalanan', 'Kau suka duduk tepi tingkap ke lorong?'],
+      ['Lesen L', 'Lesen P', 'Lesen', 'Berapa kali kau ambil ujian?'],
+      ['Tayar Pancit', 'Bateri Kereta Kong', 'Rosak', 'Siapa kau call dulu?'],
+      ['Waze', 'Google Maps', 'Navigasi', 'Pernah tak dia bawa kau sesat?'],
+      ['Helmet', 'Tali Pinggang Keledar', 'Keselamatan', 'Pernah kena saman sebab tak pakai?']
     ]
   },
   {
@@ -343,7 +387,15 @@ const CATEGORIES = [
       ['Tikar Mengkuang', 'Karpet', 'Ruang tamu', 'Bila masa benda ni mesti dikeluarkan?'],
       ['Anak Sulung', 'Anak Bongsu', 'Adik-beradik', 'Perangai apa yang paling ketara bagi orang ni?'],
       ['Mak Cik Jiran', 'Pak Cik Pengawal', 'Jiran', 'Apa soalan klise dia bila jumpa kau?'],
-      ['Pindah Rumah', 'Ubah Suai Rumah', 'Penat', 'Barang apa paling susah nak urus?']
+      ['Pindah Rumah', 'Ubah Suai Rumah', 'Penat', 'Barang apa paling susah nak urus?'],
+      ['Mesin Basuh', 'Peti Sejuk', 'Perkakas', 'Benda ni rosak, apa jadi kat rumah?'],
+      ['Rumah Teres', 'Kondominium', 'Kediaman', 'Apa benda paling kau suka pasal tempat tinggal kau?'],
+      ['Atuk', 'Nenek', 'Warga emas', 'Ayat apa yang dia selalu cakap kat kau?'],
+      ['Lampu Rosak', 'Paip Bocor', 'Baiki', 'Kau baiki sendiri ke panggil orang?'],
+      ['Bil Elektrik', 'Bil Air', 'Bil', 'Berapa kau bayar sebulan?'],
+      ['Katil', 'Sofa', 'Rehat', 'Kau boleh baring lama-lama kat sini?'],
+      ['Bantal', 'Selimut', 'Tidur', 'Kau boleh tidur tanpa benda ni?'],
+      ['Pagar Rumah', 'Pintu Rumah', 'Masuk', 'Kau kunci berapa lapis?']
     ]
   },
   {
@@ -360,7 +412,15 @@ const CATEGORIES = [
       ['Kena Rotan', 'Berdiri Atas Kerusi', 'Hukuman', 'Kesalahan apa yang buat orang kena benda ni?'],
       ['SPM', 'UPSR', 'Peperiksaan', 'Apa kau buat malam sebelum peperiksaan ni?'],
       ['Kelas Tambahan', 'Tuisyen', 'Belajar', 'Kau betul-betul belajar atau pergi lepak je?'],
-      ['Bas Sekolah', 'Van Sekolah', 'Pagi', 'Siapa yang selalu duduk kat tempat paling belakang?']
+      ['Bas Sekolah', 'Van Sekolah', 'Pagi', 'Siapa yang selalu duduk kat tempat paling belakang?'],
+      ['Baju Sekolah', 'Baju Sukan', 'Seragam', 'Warna apa yang paling kau ingat?'],
+      ['Cikgu Kelas', 'Cikgu Kaunseling', 'Cikgu', 'Apa benda paling kau ingat pasal dia?'],
+      ['Kelas PJ', 'Kelas Seni', 'Kelas best', 'Kenapa semua orang suka kelas ni?'],
+      ['Pengakap', 'Kadet Polis', 'Beruniform', 'Aktiviti apa yang paling kau ingat?'],
+      ['Lawatan Sambil Belajar', 'Perkhemahan', 'Rombongan', 'Pernah ada kejadian kelakar masa ni?'],
+      ['Ponteng Sekolah', 'Datang Lambat', 'Salah', 'Alasan apa yang kau bagi?'],
+      ['Hari Guru', 'Hari Kantin', 'Hari istimewa', 'Aktiviti apa yang paling kau ingat?'],
+      ['Pemadam', 'Pembaris', 'Alat tulis', 'Siapa yang selalu pinjam tak pulang?']
     ]
   },
   {
@@ -376,7 +436,16 @@ const CATEGORIES = [
       ['KWSP', 'ASB', 'Simpanan', 'Bila kali terakhir kau semak baki benda ni?'],
       ['Ansuran Kereta', 'Sewa Rumah', 'Bulanan', 'Berapa hari lepas gaji duit ni dah keluar?'],
       ['Grab Driver', 'Rider Foodpanda', 'Aplikasi', 'Kenapa ramai orang pilih buat kerja ni?'],
-      ['Abang Rider', 'Posmen', 'Depan pintu', 'Apa ayat standard kau cakap bila dia sampai depan pagar?']
+      ['Abang Rider', 'Posmen', 'Depan pintu', 'Apa ayat standard kau cakap bila dia sampai depan pagar?'],
+      ['Content Creator', 'Influencer', 'Kerjaya', 'Berapa follower baru boleh kira glamor?'],
+      ['Resign', 'Kena Buang Kerja', 'Berhenti', 'Apa ayat terakhir kau kat bos?'],
+      ['Kenaikan Gaji', 'Naik Pangkat', 'Ganjaran', 'Berapa lama kau tunggu benda ni?'],
+      ['Email Kerja', 'Group WhatsApp Kerja', 'Mesej kerja', 'Kau balas tengah malam ke?'],
+      ['Kad Kredit', 'Pinjaman Peribadi', 'Hutang', 'Benda apa paling mahal kau pernah beli guna ni?'],
+      ['Kerja Kerajaan', 'Kerja Swasta', 'Majikan', 'Kenapa orang pilih yang ni?'],
+      ['Pantry Ofis', 'Bilik Mesyuarat', 'Ofis', 'Apa yang jadi kat sini masa rehat?'],
+      ['Annual Dinner', 'Team Building', 'Acara syarikat', 'Pernah menang hadiah apa-apa?'],
+      ['Freelance', 'Kerja Tetap', 'Pendapatan', 'Apa kelebihan dan keburukan dia?']
     ]
   },
   {
@@ -394,7 +463,14 @@ const CATEGORIES = [
       ["Touch 'n Go eWallet", 'DuitNow QR', 'Bayar', 'Pernah tak benda ni gagal masa nak bayar?'],
       ['YouTube', 'Netflix', 'Tontonan', 'Apa kau tengok sebelum tidur?'],
       ['Mobile Legends', 'PUBG Mobile', 'Game', 'Siapa dalam geng ni paling kuat main?'],
-      ['Earphone Berwayar', 'Earbuds Wireless', 'Telinga', 'Berapa kali kau dah hilangkan benda ni?']
+      ['Earphone Berwayar', 'Earbuds Wireless', 'Telinga', 'Berapa kali kau dah hilangkan benda ni?'],
+      ['ChatGPT', 'Gemini', 'AI', 'Benda paling pelik kau pernah tanya dia?'],
+      ['Threads', 'X (Twitter)', 'Media sosial', 'Kau lebih banyak scroll ke posting?'],
+      ['TikTok Live', 'Shopee Live', 'Jual langsung', 'Ayat apa yang host selalu jerit?'],
+      ['Facebook', 'Instagram', 'Feed', 'Siapa dalam family kau paling aktif kat sini?'],
+      ['Spotify', 'YouTube Music', 'Lagu', 'Playlist apa yang kau selalu pasang?'],
+      ['Laptop', 'Tablet', 'Skrin besar', 'Kau guna untuk kerja ke hiburan?'],
+      ['Smartwatch', 'Fitness Band', 'Pergelangan', 'Kau betul-betul tengok step count?']
     ]
   },
   {
@@ -411,7 +487,15 @@ const CATEGORIES = [
       ['Musim Hujan', 'Musim Jerebu', 'Cuaca', 'Apa barang wajib kau bawa waktu ni?'],
       ['Banjir Kilat', 'Tanah Runtuh', 'Bencana', 'Apa persediaan paling penting?'],
       ['Bunga Raya', 'Bunga Orkid', 'Bunga', 'Warna bunga ni selalunya apa?'],
-      ['Pokok Kelapa', 'Pokok Kelapa Sawit', 'Pokok', 'Apa hasil yang kita dapat dari pokok ni?']
+      ['Pokok Kelapa', 'Pokok Kelapa Sawit', 'Pokok', 'Apa hasil yang kita dapat dari pokok ni?'],
+      ['Ikan Keli', 'Ikan Patin', 'Ikan sungai', 'Kau suka masak cara apa?'],
+      ['Lembu', 'Kambing', 'Ladang', 'Kat mana kau selalu nampak haiwan ni?'],
+      ['Burung Merpati', 'Burung Gagak', 'Burung', 'Kat mana kau selalu nampak dia?'],
+      ['Ular Sawa', 'Biawak', 'Melata', 'Apa kau buat kalau terserempak?'],
+      ['Hujan Panas', 'Kilat Petir', 'Langit', 'Apa yang orang tua selalu pesan masa ni?'],
+      ['Kunang-Kunang', 'Rama-Rama', 'Bersayap', 'Kat mana kau pernah nampak?'],
+      ['Ikan Arowana', 'Ikan Laga', 'Akuarium', 'Kenapa orang suka bela ikan ni?'],
+      ['Arnab', 'Hamster', 'Comel', 'Kau pernah bela? Apa jadi?']
     ]
   },
   {
@@ -427,7 +511,16 @@ const CATEGORIES = [
       ['Bersanding', 'Akad Nikah', 'Kahwin', 'Apa perasaan pengantin masa ni?'],
       ['Bunga Telur', 'Doorgift Kenduri', 'Cenderahati', 'Kau simpan benda ni ke terus buang?'],
       ['Kompang', 'Gendang Silat', 'Bunyi', 'Bila bunyi ni kedengaran, maksudnya apa?'],
-      ['Rewang', 'Gotong-Royong', 'Beramai', 'Tugasan apa yang semua orang nak elak?']
+      ['Rewang', 'Gotong-Royong', 'Beramai', 'Tugasan apa yang semua orang nak elak?'],
+      ['Tahun Baru Cina', 'Deepavali', 'Perayaan', 'Apa benda paling meriah masa ni?'],
+      ['Pasar Tani', 'Pasar Pagi', 'Pagi', 'Barang apa yang kau selalu beli?'],
+      ['Wayang Kulit', 'Mak Yong', 'Persembahan', 'Kau pernah tengok secara langsung?'],
+      ['Batik', 'Songket', 'Kain', 'Bila orang selalu pakai?'],
+      ['Congkak', 'Batu Seremban', 'Main tradisional', 'Siapa ajar kau main?'],
+      ['Pantun', 'Syair', 'Puisi', 'Cuba sebut satu yang kau ingat!'],
+      ['Kad Raya', 'Ucapan WhatsApp', 'Ucapan', 'Kau masih hantar kad?'],
+      ['Songkok', 'Tudung Bawal', 'Penutup kepala', 'Bila kau pakai benda ni?'],
+      ['Dikir Barat', 'Gamelan', 'Muzik tradisional', 'Negeri mana paling terkenal dengan ni?']
     ]
   },
   {
@@ -444,7 +537,15 @@ const CATEGORIES = [
       ['Pak Pandir', 'Si Tanggang', 'Cerita rakyat', 'Apa pengajaran cerita ni?'],
       ['Anugerah Juara Lagu', 'Anugerah Bintang Popular', 'Anugerah', 'Siapa yang kau ingat pernah menang?'],
       ['Mat Kilau', 'Polis Evo', 'Filem', 'Babak mana yang paling diingati?'],
-      ['Era FM', 'Hot FM', 'Radio', 'DJ mana yang kau selalu dengar?']
+      ['Era FM', 'Hot FM', 'Radio', 'DJ mana yang kau selalu dengar?'],
+      ['Labubu', 'Crybaby', 'Koleksi', 'Kalau dapat yang rare, berapa kau sanggup jual balik?'],
+      ['War Tiket Konsert', 'War Tiket Bola', 'Rebutan', 'Pernah tak kau berjaya dapat? Macam mana?'],
+      ['Spongebob', 'Doraemon', 'Kartun', 'Watak mana yang paling kau suka?'],
+      ['Drama Korea', 'Drama Thai', 'Siri luar', 'Kau tengok sampai pukul berapa?'],
+      ['Marvel', 'DC', 'Filem hero', 'Watak mana yang paling power?'],
+      ['Hantu Kak Limah', 'Munafik', 'Filem seram', 'Babak mana paling diingati?'],
+      ['MeleTOP', 'Melodi', 'Rancangan TV', 'Kau tengok untuk tahu gosip ke lagu?'],
+      ['Squid Game', 'Money Heist', 'Siri Netflix', 'Kalau kau masuk cerita ni, kau survive tak?']
     ]
   },
   {
@@ -461,7 +562,15 @@ const CATEGORIES = [
       ['Silat', 'Taekwondo', 'Bertarung', 'Kau pernah belajar? Sampai tahap mana?'],
       ['Larian Marathon', 'Fun Run', 'Lari', 'Kenapa orang suka masuk acara ni?'],
       ['Memancing', 'Menjala Ikan', 'Air', 'Berapa lama kau sanggup tunggu sebelum dapat?'],
-      ['Gasing', 'Wau', 'Main kampung', 'Negeri mana paling terkenal dengan benda ni?']
+      ['Gasing', 'Wau', 'Main kampung', 'Negeri mana paling terkenal dengan benda ni?'],
+      ['Pickleball', 'Padel', 'Raket', 'Kenapa tiba-tiba semua orang main benda ni?'],
+      ['Run Club', 'Hiking Bukit', 'Riadah', 'Kau pergi sebab nak sihat ke nak posting?'],
+      ['Bola Jaring', 'Bola Keranjang', 'Gelanggang', 'Kedudukan apa yang kau main?'],
+      ['Berenang', 'Kayak', 'Basah', 'Kat mana tempat paling best?'],
+      ['Formula 1', 'MotoGP', 'Perlumbaan', 'Siapa pelumba kegemaran kau?'],
+      ['Liga Inggeris', 'Piala Dunia', 'Bola tengok', 'Kau sokong pasukan mana?'],
+      ['Hoki', 'Kriket', 'Kayu', 'Pernah main masa sekolah?'],
+      ['Catur', 'Dam Haji', 'Papan', 'Siapa dalam geng ni paling pandai?']
     ]
   },
   {
@@ -476,46 +585,17 @@ const CATEGORIES = [
       ['Kena Sampuk', 'Histeria', 'Pelik', 'Apa yang orang buat bila benda ni berlaku?'],
       ['Bau Bunga Melur', 'Bau Kemenyan', 'Bau', 'Kalau tiba-tiba bau ni waktu malam, reaksi kau?'],
       ['Mimpi Ngeri', 'Kena Tindih Masa Tidur', 'Tidur', 'Kau pernah alami? Apa yang kau nampak?'],
-      ['Bigfoot Johor', 'Naga Tasik Chini', 'Pernah nampak', 'Kau percaya ke cerita pasal benda ni?']
-    ]
-  },
-  {
-    id: 'pedas', group: 'lepak', name: 'Edisi Pedas (Lepak)', icon: 'cat_pedas', desc: 'Perangai member, cinta & rahsia',
-    words: [
-      ['Pinjam Duit Buat Lupa', 'Lepak Tinggal Dompet', 'Duit', 'Dalam kumpulan kita sekarang, siapa paling berpotensi buat perangai ni?'],
-      ['Stalk Ex Waktu Malam', 'Tersuka Kawan Sendiri', 'Rahsia', 'Apa tanda-tanda seseorang tu tengah terjebak dengan benda ni?'],
-      ['Koyak / Sentap', 'Merajuk Tak Bertempat', 'Emosi', 'Selalunya lepas berapa lama baru orang tu elok balik?'],
-      ['Sembang Kari', 'Palatau (Buat-Buat Tahu)', 'Cakap besar', 'Macam mana cara kita nak patahkan hujah orang macam ni?'],
-      ['Takut Bini / Awek', 'Kaki Report', 'Pasangan', 'Ayat apa yang dia selalu guna bila nak minta diri balik awal?'],
-      ['Gaji Masuk Terus Habis', 'Hujung Bulan Makan Maggi', 'Dompet', 'Benda paling tak berfaedah apa yang buat duit tu lesap?'],
-      ['Membawang', 'Kaki Kipas', 'Mulut', 'Macam mana gaya percakapan orang yang tengah buat benda ni?'],
-      ['Janji Melayu', 'Sidai Kawan', 'Lambat', 'Apa alasan paling klise orang bagi bila buat perangai ni?'],
-      ['Bluetick Tak Balas', 'Sorok Last Seen', 'Chat', 'Apa yang kau fikir bila kawan buat macam ni?'],
-      ['Kawan Datang Lambat', 'Kawan Cancel Last Minit', 'Plan lepak', 'Alasan paling klise yang pernah kau dengar?'],
-      ['Beli Kopi Mahal Tiap Hari', 'Checkout Shopee Tengah Malam', 'Belanja', 'Siapa dalam geng ni paling teruk bab ni?'],
-      ['Crush Tak Layan', 'Kena Friendzone', 'Cinta', 'Apa tanda awal yang kita patut perasan?'],
-      ['Ex Contact Balik', 'Ex Dah Kahwin', 'Bekas', 'Reaksi pertama kau bila dapat tahu?']
-    ]
-  },
-  {
-    id: 'viral', group: 'terkini', name: 'Viral & Terkini', icon: 'flame', desc: 'Trend, makanan viral & benda hangat sekarang',
-    words: [
-      ['Labubu', 'Crybaby', 'Koleksi', 'Kalau dapat yang rare, berapa kau sanggup jual balik?'],
-      ['Pickleball', 'Padel', 'Raket', 'Kenapa tiba-tiba semua orang main benda ni?'],
-      ['ZUS Coffee', 'Kopi Kenangan', 'Kopi', 'Menu apa yang kau selalu order guna app?'],
-      ['Chagee', 'Mixue', 'Beratur', 'Berapa lama kau sanggup beratur untuk ni?'],
-      ['Coklat Dubai', 'Kunafa', 'Manis', 'Kat mana kau pertama kali cuba benda ni?'],
-      ['Matcha Latte', 'Hojicha Latte', 'Kafe', 'Kau suka yang manis ke pahit?'],
-      ['Mala Hotpot', 'Steamboat', 'Berkongsi', 'Bahan apa yang wajib kau ambil?'],
-      ['Ayam Gepuk', 'Ayam Geprek', 'Sambal', 'Tahap pedas mana yang kau mampu?'],
-      ['ChatGPT', 'Gemini', 'AI', 'Benda paling pelik kau pernah tanya dia?'],
-      ['Threads', 'X (Twitter)', 'Media sosial', 'Kau lebih banyak scroll ke posting?'],
-      ['TikTok Live', 'Shopee Live', 'Jual langsung', 'Ayat apa yang host selalu jerit?'],
-      ['Proton e.MAS', 'BYD', 'Kereta elektrik', 'Kau berani beli tak? Kenapa?'],
-      ['Run Club', 'Hiking Bukit', 'Riadah', 'Kau pergi sebab nak sihat ke nak posting?'],
-      ['War Tiket Konsert', 'War Tiket Bola', 'Rebutan', 'Pernah tak kau berjaya dapat? Macam mana?'],
-      ['Content Creator', 'Influencer', 'Kerjaya', 'Berapa follower baru boleh kira glamor?'],
-      ['Menu Rahmah', 'Set Jimat', 'Murah', 'Kat mana kau pernah jumpa benda ni?']
+      ['Bigfoot Johor', 'Naga Tasik Chini', 'Pernah nampak', 'Kau percaya ke cerita pasal benda ni?'],
+      ['Jembalang', 'Penunggu Pokok', 'Penunggu', 'Orang tua kata kena buat apa supaya tak diganggu?'],
+      ['Bomoh', 'Pawang', 'Ilmu', 'Pernah jumpa? Cerita sikit!'],
+      ['Santau', 'Ubat Guna-Guna', 'Ilmu hitam', 'Apa tanda orang kata dah kena?'],
+      ['Tandas Sekolah Lama', 'Bilik Stor Gelap', 'Tempat sunyi', 'Kenapa semua orang takut pergi sorang?'],
+      ['Bunyi Cakar Dinding', 'Bunyi Tapak Kaki', 'Bunyi', 'Apa kau buat bila dengar?'],
+      ['Filem Seram Thai', 'Filem Seram Indonesia', 'Tontonan seram', 'Babak mana paling buat kau terkejut?'],
+      ['Lembaga Putih', 'Bayang Hitam', 'Penampakan', 'Kat mana orang selalu nampak?'],
+      ['Spirit of the Coin', 'Papan Ouija', 'Panggil roh', 'Pernah cuba? Apa jadi?'],
+      ['Kucing Hitam', 'Burung Hantu', 'Petanda', 'Orang tua kata benda ni tanda apa?'],
+      ['Pantang Larang', 'Petua Orang Tua', 'Kepercayaan', 'Satu pantang yang kau masih ikut?']
     ]
   }
 ];
@@ -744,9 +824,10 @@ function load() {
       delete state.set.dendaMode;
 
       // Kategori baru: kalau pemain dah pilih SEMUA kategori yang dia kenal, masukkan yang baru sekali.
-      // Simpanan lama (sebelum knownCats wujud) dibuat semasa 16 kategori asal, tanpa 'viral'.
-      const known = Array.isArray(d.set.knownCats) ? d.set.knownCats : CATEGORIES.map(c => c.id).filter(id => id !== 'viral');
-      const fresh = CATEGORIES.map(c => c.id).filter(id => !known.includes(id));
+      // (Kategori yang dah dibuang diabaikan; simpanan tanpa knownCats dianggap kenal semua kategori semasa.)
+      const allIds = CATEGORIES.map(c => c.id);
+      const known = (Array.isArray(d.set.knownCats) ? d.set.knownCats : allIds).filter(id => allIds.includes(id));
+      const fresh = allIds.filter(id => !known.includes(id));
       const sel = Array.isArray(state.set.selectedCats) ? state.set.selectedCats : [];
       if (fresh.length && known.every(id => sel.includes(id))) state.set.selectedCats = [...sel, ...fresh];
     }
